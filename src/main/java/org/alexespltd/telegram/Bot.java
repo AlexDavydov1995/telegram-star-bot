@@ -6,12 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
-import java.util.List;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -58,8 +55,6 @@ public class Bot  extends TelegramLongPollingBot {
                 return;
             }
             botConnect();
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
         }
     }
 }
