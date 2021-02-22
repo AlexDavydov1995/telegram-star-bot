@@ -1,20 +1,20 @@
-package org.alexespltd.telegram;
+package org.alexespltd.telegram.bot;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import lombok.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 public class Bot  extends TelegramLongPollingBot {
 
-    private static final Logger log = Logger.getLogger(Bot.class);
+    private static final Logger log = LogManager.getLogger(Bot.class);
 
     final int pause = 10000;
 
@@ -38,7 +38,21 @@ public class Bot  extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.debug("Update received");
+        log.debug("Receive new Update. updateID: " + update.getUpdateId());
+
+        Long chatId = update.getMessage().getChatId();
+        String inputText = update.getMessage().getText();
+
+        if (inputText.startsWith("/start")) {
+            SendMessage message = new SendMessage();
+            message.setChatId(chatId);
+            message.setText("Hello. I am a horoscope bot.\nWould you like to know your fate?");
+            try {
+                execute(message);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void botConnect() {
